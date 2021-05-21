@@ -104,6 +104,7 @@ app.use(
             connectSrc: ["'self'", ...connectSrcUrls],
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            childSrc : ["blob:"],
             workerSrc: ["'self'", "blob:"],
             objectSrc: [],
             imgSrc: [
