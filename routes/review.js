@@ -11,4 +11,7 @@ router.post('/', isLoggedIn, validateReview, catchAsync(reviews.createReview))
 
 router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(reviews.deleteReview))
 
+router.put('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(reviews.updateReview))
+router.get('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(reviews.editForm))
+
 module.exports = router

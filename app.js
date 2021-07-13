@@ -14,8 +14,8 @@ const flash = require('connect-flash')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')  //to use passport with local (username) strategy
 const User = require('./models/user')
-const mongoSanitize = require('express-mongo-sanitize')
-const helmet = require('helmet')
+const mongoSanitize = require('express-mongo-sanitize') //sanitinise the input before passing onto mongo
+const helmet = require('helmet') //to imporove security; has 11 middlewares that mainly change headers:: to save from attacks
 
 const campRoutes = require('./routes/campground.js')
 const reviewRoutes = require('./routes/review.js')
@@ -42,8 +42,8 @@ app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({extended : true}))
-app.use(methodOverride('_method'))
-app.use(mongoSanitize({replaceWith : '_'}))
+app.use(methodOverride('_method')) //As forms only support post or get requests
+app.use(mongoSanitize({replaceWith : '_'})) //sanitinise the input before passing onto mongo
 
 const secret = process.env.SECRET || 'squirrel'
 
@@ -55,6 +55,7 @@ const store = MongoStore.create({
     }
 });
 
+// Sessions are used to store state data on the server side
 const sessionConfig = {
     store,
     name : 'sess',
@@ -74,6 +75,8 @@ app.use(flash())
 
 app.use(helmet())
 
+//Helmet's Content Security policy will not let us load scripts from other sites
+//We need to specify the allowed urls to let these scripts load
 const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com",
     "https://api.tiles.mapbox.com",

@@ -52,7 +52,7 @@
         <div id='map' style='width: 400px; height: 300px;'></div>
         <% if(currentUser){ %>
         <h2>Leave a Review</h2>
-        <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3 needs-validation" novalidate>
+        <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3 needs-validation" id="new-review" novalidate>
             <!-- <div class="mb-3">
                 <label class="form-label" for="rating">Rating</label>
                 <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
@@ -89,11 +89,16 @@
                     Rated: <%= review.rating %> stars
                 </p>
                 <!-- <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username%></h6> -->
-                <p class="card-text">Review: <%= review.body %></p>
-                <%  if( currentUser && review.author.equals(currentUser._id))  {%>
-                <form action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
-                    <button class="btn btn-sm btn-danger">Delete</button>
-                </form>
+                <p class="card-text"><%= review.body %></p>
+                <% if( currentUser && review.author.equals(currentUser._id)) {%>
+                    <div class='card-body'>
+                        <form class='d-inline' action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>" method="GET">
+                            <button class="btn btn-info">Edit</button>
+                        </form>
+                        <form class='d-inline' action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
                 <% } %>
             </div>
         </div>
@@ -106,3 +111,4 @@
     const campground = <%- JSON.stringify(campground) %>
 </script>
 <script src = "/showPageMap.js"></script>
+<script src="/editReview.js"></script>

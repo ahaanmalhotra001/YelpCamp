@@ -22,3 +22,28 @@ module.exports.deleteReview = async (req, res) => {
     req.flash('success', 'Review deleted successfully!')
     res.redirect(`/campgrounds/${id}`)
 }
+
+module.exports.updateReview = async (req, res) => {
+    const { reviewId } = req.params;
+    const { rating, body } = req.body.review;
+    rev = await Review.findById(reviewId);
+    rev.rating = rating
+    rev.body = body
+    rev.save()
+
+    req.flash('success', 'Review updates successfully!')
+    res.redirect(`/campgrounds/${req.params.id}`)
+}
+
+module.exports.editForm = async (req, res) => {
+    const reviewid = req.params.reviewId
+    rev = await Review.findById(reviewid);
+    if (!rev) {
+        req.flash('error', 'Cannot find that campground')
+        return res.redirect('/campgrounds')
+    }
+
+    const cmp = req.params.id
+
+    res.render('reviews/edit', { rev, cmp })
+}
